@@ -1,7 +1,6 @@
-print()
 import random
 
-from yaml import Mark
+from cv2 import Mat
 
 class Matrix:
 
@@ -33,17 +32,28 @@ class Matrix:
                 out_arr.append(self.data[i][j])
         return out_arr
 
-    def display(self, matrix):
+    def display(self):
         
         print()
         for i in range(self.row):
             for j in range(self.col):
-                print(matrix[i][j] , end= ' ')
+                print(self.data[i][j] , end= ' ')
             print()
 
     def generate_matrix(self):
         
         return self.display(self.data)
+
+    @staticmethod
+    def subract(a , b):
+
+        result = Matrix(a.row , a.col)
+        
+        for i in range(result.row):
+            for j in range(result.col):
+                result.data[i][j] = a.data[i][j] - b.data[i][j]
+
+        return result
 
     def add(self , n):
 
@@ -59,16 +69,15 @@ class Matrix:
                     self.data[i][j] += n                
 
         # return self.display(self.data)
-
-    def transpose(self):
+    @staticmethod
+    def transpose(a):
         
-        self.result = Matrix(self.col , self.row)
+        resultTranspose = Matrix(a.col , a.row)
+        for i in range(resultTranspose.col):
+            for j in range(resultTranspose.row):
+                resultTranspose.data[j][i] = a.data[i][j]
 
-        for i in range(self.row):
-            for j in range(self.col):
-                self.result.data[j][i] = self.data[i][j]
-
-        self.result.display(self.result.data)
+        return resultTranspose
 
     @staticmethod
     def multiply(a , b):
@@ -89,7 +98,31 @@ class Matrix:
                     a.result.data[i][j] = s
 
             return a.result
-     
+    
+    def multiplyScalar(self , n):
+        
+        if isinstance(n , Matrix):
+            for i in range(self.row):
+                for j in range(self.col):
+                    self.data[i][j] *= n.data[i][j]   
+
+        else:
+            
+            for i in range(self.row):
+                for j in range(self.col):
+                    self.data[i][j] *= n                
+    
+    @staticmethod
+    def mapOutput(a , func):
+        
+        result = Matrix(a.row , a.col)
+        for i in range(result.row):
+            for j in range(result.col):
+                val = result.data[i][j] 
+                result.data[i][j] = func(val)             
+        
+        return result
+
     def map(self , func):
 
         for i in range(self.row):
@@ -98,13 +131,7 @@ class Matrix:
                 self.data[i][j] = func(val)             
 
         # return self.display(self.data)
-
-
-
 if __name__ == "__main__":
-    m = Matrix(2 , 2)
-    m.generate_matrix()
-
-    y = lambda x : x * 2
-
-    m.map(y)
+    m = Matrix(2 , 1)
+    n = Matrix.transpose(m)
+    print(n.display())  

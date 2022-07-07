@@ -11,9 +11,9 @@ class dataSet:
         # print(self.x , self.y)
 
         if self.x == 1 and self.y == 1:
-            self.label = 10
+            self.label = 1
         else:
-            self.label = 5    
+            self.label = 2
 
 class Precptron:
 
@@ -25,8 +25,8 @@ class Precptron:
     def sign(self , s):    
 
         if s >= 0.5:
-            return 10
-        return 5
+            return 2
+        return 1
 
     def guess(self , input):
         
@@ -56,4 +56,6 @@ for i in points:
     p.train(val , target)
 
 i = [1 , 1]
-print(p.guess(i))
+
+re = lambda x :  "Red" if x == 1  else "Blue"
+print( re(p.guess(i)))
