@@ -23,6 +23,7 @@ class Preceptron:
     def __init__(self):
         self.weight = [random.uniform(-1 , 1) for i in range(2)]
         self.lr = 0.1
+        self.bias = 1
 
     def sign(self, s):
        
@@ -38,17 +39,20 @@ class Preceptron:
         for i in range(len(self.weight)):
             self.sum += input[i] * self.weight[i]
 
-        a = self.sign(self.sum+1)
+        self.sum += self.bias
+
+        a = self.sign(self.sum)
         return a
 
     def train(self , input , target):
         
         self.result = self.guess(input)
-        self.error = self.result - target
+        self.error = target - self.result
 
         for i in range(len(self.weight)):
             self.weight[i] += self.error * input[i] * self.lr
-            
+        
+        self.bias = self.bias + self.lr * self.error
 n = 500
 p = Preceptron()
 
@@ -83,7 +87,6 @@ while not done:
                         input = [i.x , i.y]
                         target = i.label
                         p.train(input , target)
-                    print("training")
 
 
     screen.fill((255 ,255 , 255))
@@ -94,16 +97,15 @@ while not done:
         guess = p.guess(input)
         
         if guess == target:
-            # print(f"GUESS : {guess} , TARGET : {target} IN")
+            print(f"GUESS : {guess} , TARGET : {target} IN")
             color = (0 , 255 , 0)
         else:
-            # print(f"GUESS : {guess} , TARGET : {target} OUT")
+            print(f"GUESS : {guess} , TARGET : {target} OUT")
             color = (255 , 0 , 0)
 
         pygame.draw.circle(screen , color , (i.x , i.y) , 4)
-
-
+        
     pygame.draw.line(screen , (0 , 0 , 0 ) , (0 ,0), (width , heigth))
     pygame.display.update()
     # del points
-    print()
+    # print()

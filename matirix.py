@@ -17,11 +17,11 @@ class Matrix:
             self.data.append(row)
             
     @staticmethod
-    def arrayFrom(input):
-        new = Matrix(len(input) , 1)
+    def arrayFrom(n):
+        new = Matrix(len(n) , 1)
         
-        for i in range(len(input)):
-            new.data[i][0] = input[i]
+        for i in range(len(n)):
+            new.data[i][0] = n[i]
 
         return new
 
@@ -34,7 +34,6 @@ class Matrix:
 
     def display(self):
         
-        print()
         for i in range(self.row):
             for j in range(self.col):
                 print(self.data[i][j] , end= ' ')
@@ -58,8 +57,11 @@ class Matrix:
     def add(self , n):
 
         if isinstance(n , Matrix):
-            for i in range(self.row):
-                for j in range(self.col):
+            # print(self.row , self.col , n.row , n.col)
+            # print()
+
+            for i in range(n.row):
+                for j in range(n.col):
                     self.data[i][j] += n.data[i][j]   
 
         else:
@@ -84,33 +86,34 @@ class Matrix:
         if a.col != b.row:
             print("col" , a.col , "row" , b.row)
             print(" DIMENTION ERROR ")
-            return None
+            # return None
 
         else:
-            a.result = Matrix(a.row , b.col)
+            result = Matrix(a.row , b.col)
             
-            for i in range(a.result.row):
-                for j in range(a.result.col):
+            for i in range(result.row):
+                for j in range(result.col):
                     s = 0 
                     for k in range(a.col):
                         s += a.data[i][k] * b.data[k][j]
 
-                    a.result.data[i][j] = s
+                    result.data[i][j] = s
 
-            return a.result
+            return result
     
     def multiplyScalar(self , n):
-        
+        # print(n.row , n.col ,self.row , self.col)
         if isinstance(n , Matrix):
-            for i in range(self.row):
-                for j in range(self.col):
+            for i in range(n.row):
+                for j in range(n.col):
                     self.data[i][j] *= n.data[i][j]   
 
         else:
+            # print(n , self)
             
             for i in range(self.row):
                 for j in range(self.col):
-                    self.data[i][j] *= n                
+                    self.data[i][j] *= n         
     
     @staticmethod
     def mapOutput(a , func):
